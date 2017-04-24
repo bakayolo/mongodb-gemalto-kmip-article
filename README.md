@@ -38,12 +38,12 @@ To enable Encryption at Rest on 1 standalone, essentially you will need the foll
 Connect and authenticate to the Safenet KeySecure Web Console.
 
 - Navigate to **Security > Local CAs**, fill the fields accordingly and click on **Create**.  
-![](/Users/bappr/Workspace/mongo-kmip-blog/images/create_ca.png)  
+![](./images/create_ca.png)  
 Your new Local Root CA appears in the Local Certificate Authority List.  
 This Root CA will be used to sign your server certificate and your client certificate. Copy the content of your Root CA in your clipboard.  
 - Navigate to **Security > Trusted CA Lists** and **Add** a new Profile in the list.  
 Then, click on your Profile name, **Edit** it and **Add** your Root CA to the list of Trusted CAs. **Save** the profile.  
-![](/Users/bappr/Workspace/mongo-kmip-blog/images/create_profile.png)
+![](./images/create_profile.png)
 
 Connect to the machine hosting your MongoDB standalone instance.
 
@@ -54,19 +54,19 @@ Connect to the machine hosting your MongoDB standalone instance.
 Connect and authenticate to the Safenet KeySecure Web Console.
 
 - Navigate to **Security > SSL Certificates**, fill the fields accordingly and click on **Create Certificate request**.  
-![](/Users/bappr/Workspace/mongo-kmip-blog/images/create_ssl_cert.png)  
+![](./images/create_ssl_cert.png)  
 Your new CSR (Certificate Signing Request) appears in the Certificate List with a status **Request Pending**. Click on its name and copy the content in your clipboard.  
-![](/Users/bappr/Workspace/mongo-kmip-blog/images/create_ssl_cert_2.png)  
+![](./images/create_ssl_cert_2.png)  
 You must now sign your CSR using your Root CA.
 - Navigate to **Security > Local CAs**, click on your Root CA name and on **Sign Request**. Paste the content of your clipboard in the **Certificate Request** field, choose your Root CA in the CA list, check **Server** as Certificate Purpose and click on **Sign Request**.  
-![](/Users/bappr/Workspace/mongo-kmip-blog/images/sign_csr.png)  
+![](./images/sign_csr.png)  
 Copy your Signed Certificate in your clipboard.  
-![](/Users/bappr/Workspace/mongo-kmip-blog/images/sign_csr_2.png)  
+![](./images/sign_csr_2.png)  
 - Coming back to your Local CA page, your Signed Certificate is available by clicking on **Show Signed Certs**.  
-![](/Users/bappr/Workspace/mongo-kmip-blog/images/show_signed_cert.png)  
+![](./images/show_signed_cert.png)  
 - Navigate to **Security > SSL Certificates**, your Certificate Request is still in **Request Pending** status. You must install your new Signed Certificate in KeySecure to make it usable by your KMIP Server.  
 Click on your Certificate Request name and on **Install Certificate**. Then, paste the content of your clipboard into the field and **Save** it.  
-![](/Users/bappr/Workspace/mongo-kmip-blog/images/install_cert.png)  
+![](./images/install_cert.png)  
 Your Certificate is not anymore a Certificate Request and has a status **Active**.
 
 ##### 3. Create a Client Certificate for the MongoDB Instance
@@ -86,7 +86,7 @@ Connect and authenticate to the Safenet KeySecure Web Console.
 - Navigate to **Security > Local CAs**, click on your Root CA name and on **Sign Request**. Paste the content of your clipboard in the **Certificate Request** field, choose your Root CA in the CA list, check **Client** as Certificate Purpose and click on **Sign Request**.  
 Copy your Signed Certificate in your clipboard.
 - Coming back to your Local CA page, your Signed Certificate is available by clicking on **Show Signed Certs**.  
-![](/Users/bappr/Workspace/mongo-kmip-blog/images/show_signed_cert_2.png)  
+![](./images/show_signed_cert_2.png)  
 
 Connect to the machine hosting your MongoDB standalone instance.
 
@@ -101,10 +101,10 @@ cat /etc/ssl/mongodb_kmip_client.key /etc/ssl/mongodb_kmip_client.crt > /etc/ssl
 Connect and authenticate to the Safenet KeySecure Web Console.
 
 - Navigate to **Device > Key Server**, add a new KMIP Server, check **Use SSL**, choose an available port and choose the Server Certificate that you installed previously.  
-![](/Users/bappr/Workspace/mongo-kmip-blog/images/kmip_list.png)  
+![](./images/kmip_list.png)  
 - **Optional**  
 Open the properties of your KMIP Server and **Edit** the **Authentication Settings**. Check **Used for SSL session and username (most secure)** to make the Client Certificate Authentication mandatory, choose the profile that you previously created in the **Trusted CA List Profile**, and choose the Certificate field you want to use as username for the authentication (I use **CN** for this tutorial).  
-![](/Users/bappr/Workspace/mongo-kmip-blog/images/kmip_properties.png)  
+![](./images/kmip_properties.png)  
 
 ### MongoDB - KMIP - Encryption at Rest
 
@@ -125,7 +125,7 @@ security:
 Connect and authenticate to the Safenet KeySecure Web Console.
 
 - Navigate to **Security > Keys**, you can see that your master key has been created (in my case, the owner is my MongoDB Instance / Hostname because I chose CN as the username for Client Authentication).
-![](/Users/bappr/Workspace/mongo-kmip-blog/images/keys.png)
+![](./images/keys.png)
 
 Your data are now encrypted at Rest.
 
