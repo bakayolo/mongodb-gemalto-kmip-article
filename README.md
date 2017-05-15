@@ -1,6 +1,6 @@
 # Secure MongoDB with Encryption at Rest using Gemalto Safenet KeySecure
 
-*Disclaimer - because the demo is mane on a Standalone Mongo and not on a Replica Set, the following article is intended for a test environment*
+*Disclaimer - the demo in the following article is made on a Standalone Mongo and not a Replica Set. For this reason, the demo is intended for a test environment.*
 
 ### Overview
 
