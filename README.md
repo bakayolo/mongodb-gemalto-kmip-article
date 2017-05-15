@@ -1,6 +1,6 @@
 # Secure MongoDB with Encryption at Rest using Gemalto Safenet KeySecure
 
-*Disclaimer - the following article is intended for a test environment*
+*Disclaimer - because the demo is mane on a Standalone Mongo and not on a Replica Set, the following article is intended for a test environment*
 
 ### Overview
 
@@ -11,7 +11,7 @@ SafeNet KeySecure by Gemalto is an encryption and key management appliance that 
 MongoDB is taking care of everything, you only use Safenet KeySecure as a Keys Store.
 
 In this tutorial, I will describe the detailed process of setting up a MongoDB Standalone with Encryption at Rest using Gemalto Safenet KeySecure.  
-The process to encrypt a MongoDB ReplicaSet is similar as you can encrypt each node independently from each other. Considering you have a 3 Nodes ReplicaSet, you could have 2 nodes encrypted and one node non encryped with no impact.
+The process to encrypt a MongoDB ReplicaSet is similar as you can encrypt each node independently from each other. To demonstrate the independence between nodes, you could configure a 3 Nodes Replica Set, with 2 nodes encrypted and one node unencrypted, without any impact. Though of course this wouldn't make any sense!
 
 The bulk part of the work for setting up Encryption at Rest would be to create the certificates in order to setup the TLS (Transport Layer Security) between your MongoDB Instance and the KMIP (Key Management Interoperability Protocol) Server manager by Safenet KeySecure.  
 Fortunately, you will use the Safenet KeySecure Web Console to perform most of the operations. 
@@ -71,7 +71,7 @@ Your Certificate is not anymore a Certificate Request and has a status **Active*
 
 ##### 3. Create a Client Certificate for the MongoDB Instance
 
-**Optional**
+**Optional**  
 Connect to the machine hosting your MongoDB standalone instance.
 
 - Because KeySecure do not let you access the certificate key when generating the CSR, you must generate the Client Certificate manually.  
