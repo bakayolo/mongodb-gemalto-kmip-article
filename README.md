@@ -37,11 +37,11 @@ To enable Encryption at Rest on 1 standalone, essentially you will need the foll
 
 Connect and authenticate to the Safenet KeySecure Web Console.
 
-- Navigate to **Security > Local CAs**, fill the fields accordingly and click on **Create**.  
+- Navigate to **Security > Device CAs & SSL Certificates > Local CAs**, fill the fields accordingly and click on **Create**.  
 ![](./images/create_ca.png)  
 Your new Local Root CA appears in the Local Certificate Authority List.  
 This Root CA will be used to sign your server certificate and your client certificate. Copy the content of your Root CA in your clipboard.  
-- Navigate to **Security > Trusted CA Lists** and **Add** a new Profile in the list.  
+- Navigate to **Security > Device CAs & SSL Certificates > Trusted CA Lists** and **Add** a new Profile in the list.  
 Then, click on your Profile name, **Edit** it and **Add** your Root CA to the list of Trusted CAs. **Save** the profile.  
 ![](./images/create_profile.png)
 
@@ -53,25 +53,25 @@ Connect to the machine hosting your MongoDB standalone instance.
 
 Connect and authenticate to the Safenet KeySecure Web Console.
 
-- Navigate to **Security > SSL Certificates**, fill the fields accordingly and click on **Create Certificate request**.  
+- Navigate to **Security > Device CAs & SSL Certificates >SSL Certificates**, fill the fields accordingly and click on **Create Certificate request**.  
 ![](./images/create_ssl_cert.png)  
 Your new CSR (Certificate Signing Request) appears in the Certificate List with a status **Request Pending**. Click on its name and copy the content in your clipboard.  
 ![](./images/create_ssl_cert_2.png)  
 You must now sign your CSR using your Root CA.
-- Navigate to **Security > Local CAs**, click on your Root CA name and on **Sign Request**. Paste the content of your clipboard in the **Certificate Request** field, choose your Root CA in the CA list, check **Server** as Certificate Purpose and click on **Sign Request**.  
+- Navigate to **Security > Device CAs & SSL Certificates > Local CAs**, click on your Root CA name and on **Sign Request**. Paste the content of your clipboard in the **Certificate Request** field, choose your Root CA in the CA list, check **Server** as Certificate Purpose and click on **Sign Request**.  
 ![](./images/sign_csr.png)  
 Copy your Signed Certificate in your clipboard.  
 ![](./images/sign_csr_2.png)  
 - Coming back to your Local CA page, your Signed Certificate is available by clicking on **Show Signed Certs**.  
 ![](./images/show_signed_cert.png)  
-- Navigate to **Security > SSL Certificates**, your Certificate Request is still in **Request Pending** status. You must install your new Signed Certificate in KeySecure to make it usable by your KMIP Server.  
+- Navigate to **Security > Device CAs & SSL Certificates > SSL Certificates**, your Certificate Request is still in **Request Pending** status. You must install your new Signed Certificate in KeySecure to make it usable by your KMIP Server.  
 Click on your Certificate Request name and on **Install Certificate**. Then, paste the content of your clipboard into the field and **Save** it.  
 ![](./images/install_cert.png)  
 Your Certificate is not anymore a Certificate Request and has a status **Active**.
 
 ##### 3. Create a Client Certificate for the MongoDB Instance
 
-**Optional**  
+**Optional (Mandatory if Client Authentication enabled)**  
 Connect to the machine hosting your MongoDB standalone instance.
 
 - Because KeySecure do not let you access the certificate key when generating the CSR, you must generate the Client Certificate manually.  
@@ -83,7 +83,7 @@ Copy the content of mongodb_client.csr in your clipboard, you now need to sign i
 
 Connect and authenticate to the Safenet KeySecure Web Console.
 
-- Navigate to **Security > Local CAs**, click on your Root CA name and on **Sign Request**. Paste the content of your clipboard in the **Certificate Request** field, choose your Root CA in the CA list, check **Client** as Certificate Purpose and click on **Sign Request**.  
+- Navigate to **Security > Device CAs & SSL Certificates > Local CAs**, click on your Root CA name and on **Sign Request**. Paste the content of your clipboard in the **Certificate Request** field, choose your Root CA in the CA list, check **Client** as Certificate Purpose and click on **Sign Request**.  
 Copy your Signed Certificate in your clipboard.
 - Coming back to your Local CA page, your Signed Certificate is available by clicking on **Show Signed Certs**.  
 ![](./images/show_signed_cert_2.png)  
@@ -100,11 +100,16 @@ cat /etc/ssl/mongodb_kmip_client.key /etc/ssl/mongodb_kmip_client.crt > /etc/ssl
 
 Connect and authenticate to the Safenet KeySecure Web Console.
 
-- Navigate to **Device > Key Server**, add a new KMIP Server, check **Use SSL**, choose an available port and choose the Server Certificate that you installed previously.  
+- Navigate to **Device > Key Server > Key Server**, add a new KMIP Server, check **Use SSL**, choose an available port and choose the Server Certificate that you installed previously.  
 ![](./images/kmip_list.png)  
-- **Optional**  
+- **Optional (Mandatory if Client Authentication enabled)**  
 Open the properties of your KMIP Server and **Edit** the **Authentication Settings**. Check **Used for SSL session and username (most secure)** to make the Client Certificate Authentication mandatory, choose the profile that you previously created in the **Trusted CA List Profile**, and choose the Certificate field you want to use as username for the authentication (I use **CN** for this tutorial).  
 ![](./images/kmip_properties.png)  
+You now need to add a new user with this username in your KeySecure Instance.
+- **Optional (Mandatory if Client Authentication enabled)**  
+Navigate to **Security > Users & Groups > Local Authentication > Local Users & Groups** and add a new user. Remember that we defined the **Common Name** of the Client Certificate as **username** for the KMIP Server so both must be the same in the users list. Because the password is **Not Used** in our KMIP Setup, you can put whatever you want (the field cannot be empty however).  
+![](./images/users.png)  
+You now have a user allowed to create key against your KMIP Server.
 
 ### MongoDB - KMIP - Encryption at Rest
 
