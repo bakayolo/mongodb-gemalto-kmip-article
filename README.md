@@ -132,7 +132,7 @@ Connect and authenticate to the Safenet KeySecure Web Console.
 - Navigate to **Security > Keys**, you can see that your master key has been created (in my case, the owner is my MongoDB Instance / Hostname because I chose CN as the username for Client Authentication).
 ![](./images/keys.png)  
 Screenshot above shows that the key has an owner. That's because I enabled the Client Authentication. As you can see, the key owner, the user created previously and the Common Name of your Client Certificate are exactly the same. Only this user will be able to retrieve the key.  
-Key has no owner if Client Authentication is disable. Note that you can only change the owner of a key, not remove it.
+Key has no owner if Client Authentication is disabled. Note that you can only change the owner of a key, not remove it.
 
 Your data are now encrypted at Rest.
 
