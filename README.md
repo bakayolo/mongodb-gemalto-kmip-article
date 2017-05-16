@@ -20,7 +20,7 @@ To enable Encryption at Rest on 1 standalone, essentially you will need the foll
 
 * 1x certificate for the Root CA
 * 1x server certificate for the KMIP Server
-* 1x client certificate for the MongoDB Standalone (this one is optional as you can disable Mutual Trust on your KMIP Server but you will apply the Mutual Trust in this tutorial)
+* 1x client certificate for the MongoDB Standalone - Optional (Mandatory if Client Authentication enabled)
 
 ### Preparation
 
@@ -109,7 +109,7 @@ You now need to add a new user with this username in your KeySecure Instance.
 - **Optional (Mandatory if Client Authentication enabled)**  
 Navigate to **Security > Users & Groups > Local Authentication > Local Users & Groups** and add a new user. Remember that we defined the **Common Name** of the Client Certificate as **username** for the KMIP Server so both must be the same in the users list. Because the password is **Not Used** in our KMIP Setup, you can put whatever you want (the field cannot be empty however).  
 ![](./images/users.png)  
-You now have a user allowed to create key against your KMIP Server.
+You now have a user allowed to create keys against your KMIP Server.
 
 ### MongoDB - KMIP - Encryption at Rest
 
@@ -122,7 +122,7 @@ security:
    kmip:
       serverName: [IP / HOST KEYSECURE] #Exact IP / HOSTNAME as the one used in your kmip server certificate
       port: 5696
-      clientCertificateFile: /etc/ssl/mongodb_kmip_client.pem #Optional
+      clientCertificateFile: /etc/ssl/mongodb_kmip_client.pem #Optional (Mandatory if Client Authentication enabled)
       serverCAFile: /etc/ssl/mongodb_kmip_ca.pem
 ```
 - Start your Standalone (**You must have no data in your node**). 
