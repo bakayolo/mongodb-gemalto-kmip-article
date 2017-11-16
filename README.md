@@ -126,6 +126,7 @@ security:
       serverCAFile: /etc/ssl/mongodb_kmip_ca.pem
 ```
 - Start your Standalone (**You must have no data in your node**). 
+You might need to disable selinux.
 
 Connect and authenticate to the Safenet KeySecure Web Console.
 
